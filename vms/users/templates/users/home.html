@@ -127,9 +127,8 @@
         var myChart = new Chart(ctx, {
             type: 'pie',
             data: {
-                labels: ['Tagged Vehicles', 'Untagged Vehicles'],
+                labels: ['Tagged', 'Untagged'],
                 datasets: [{
-                    label: 'Dataset 1',
                     data: [12, 19],
                     backgroundColor:  ['rgba(255, 99, 132, 1)','rgba(54, 162, 235, 2)'],
                     hoverOffset: 1,
@@ -140,13 +139,9 @@
                 responsive: true,
                 plugins: {
                     legend: {
-                        position: 'bottom',
+                        position: 'top',
                     },
                     
-                    // title:{
-                    //     display: true,
-                    //     text: 'Chart.js Pie Chart'
-                    // }
                 }
             }
         });
@@ -199,7 +194,7 @@
             type: 'line',
             data: {
                 //x-axis
-                labels: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+                labels: ['0', '5', '10', '15', '20'],
                 datasets: [{
                     label: "Number of vehicles entered/exited",
                     data: [12, 19, 3, 5, 2, 3],
@@ -229,7 +224,15 @@
                     yAxis: {
                         beginAtZero: true
                     }
+                },
+                plugins: {
+                    subtitle: {
+                        display: true,
+                        text: 'Hours',
+                        position: 'bottom'
+                    }
                 }
+
             },
         });
     </script>

@@ -9,7 +9,7 @@ from datetime import timedelta
 app = Flask(__name__)
 app.config['SECRET_KEY'] = '878436c0a462c4145fa59eec2c43a66a'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users.db'
-app.config['SQLALCHEMY_BINDS'] = {'users':'sqlite:///users.db','vehicalregistered':'sqlite:///vehicalregistered.db'}
+app.config['SQLALCHEMY_BINDS'] = {'users':'sqlite:///users.db','registeredvechicle':'sqlite:///registeredvechicle.db'}
 app.config['REMEMBER_COOKIE_DURATION'] = timedelta(seconds=120)
 db = SQLAlchemy(app)
 bcrypt = Bcrypt(app)
@@ -25,8 +25,10 @@ login_manager.login_message_category = 'info'
 from vms.user_login.routes import blue
 from vms.users.routes import blue
 from vms.admin.routes import blue
+from vms.users_add_vehicle.routes import blue
 
 # Register Blueprint
 app.register_blueprint(user_login.routes.blue,url_prefix='/')
 app.register_blueprint(users.routes.blue,url_prefix='/')
 app.register_blueprint(admin.routes.blue,url_prefix='/')
+app.register_blueprint(users_add_vehicle.routes.blue,url_prefix='/')
