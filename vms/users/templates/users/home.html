@@ -76,6 +76,7 @@
     <!--Pie-Chart[Tagged & untagged vehicles],Bar-Chart[Total number of trips showing last 5 days ; X-axis:Days, Y-axis:Number of trips],Line-Graph[Number of vehicles entered/exited ; X-axis:Hours, Y-axis:Number of vehicles entered/exited]-->
     <div class="mb3">
         <div class="row">
+            <!--PieChart-->
             <div class="col-lg-3 mb-5">
                 <div class="card shadow h-100">
                     <div class="card-header bg-light px-4">
@@ -88,10 +89,37 @@
                     </div>
                 </div>
             </div>
+            <!--BarChart-->
+            <div class="col-lg-3 mb-5">
+                <div class="card shadow h-100">
+                    <div class="card-header bg-light px-4">
+                       <h5 class="card-title">Vehicles Trips</h5>
+                    </div>
+                    <div class="card-body p-4">
+                        <div class="d-flex h-100 w-100 align-items-center justify-content-center">
+                            <div class="w-100" style="max-width: 20rem"><canvas id="myBarChart"></canvas></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--LineGraph-->
+            <div class="col-lg-3 mb-5">
+                <div class="card shadow h-100">
+                    <div class="card-header bg-light px-4">
+                       <h5 class="card-title">Vehicles Entry - Exit</h5>
+                    </div>
+                    <div class="card-body p-4">
+                        <div class="d-flex h-100 w-100 align-items-center justify-content-center">
+                            <div class="w-100" style="max-width: 20rem"><canvas id="myLineGraph"></canvas></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
     
     <script>
+        //PieChart
         var ctx = document.getElementById('myPieChart').getContext('2d');
         const DATA_COUNT = 5;
         const NUMBER_CFG = {count: DATA_COUNT, min: 0, max: 100};
@@ -121,6 +149,88 @@
                     // }
                 }
             }
+        });
+    </script>
+    <script>
+        //BarChart
+        var ctx = document.getElementById('myBarChart').getContext('2d');
+        var myChart = new Chart(ctx,{
+            type: 'bar',
+            data: {
+                //x-axis
+                labels: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+                datasets: [{
+                    label: "Last 5 days Trips",
+                    data: [12, 19, 3, 5, 2, 3],
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(255, 159, 64, 1)',
+                        'rgba(255, 205, 86, 1)',
+                        'rgba(75, 192, 192, 1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(153, 102, 255, 1)',
+                        'rgba(201, 203, 207, 1)'
+                    ],
+                    borderColor: [
+                        'rgb(255, 99, 132)',
+                        'rgb(255, 159, 64)',
+                        'rgb(255, 205, 86)',
+                        'rgb(75, 192, 192)',
+                        'rgb(54, 162, 235)',
+                        'rgb(153, 102, 255)',
+                        'rgb(201, 203, 207)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            },
+        });
+    </script>
+    <script>
+        //LineGraph
+        var ctx = document.getElementById('myLineGraph').getContext('2d');
+        var myChart = new Chart(ctx,{
+            type: 'line',
+            data: {
+                //x-axis
+                labels: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+                datasets: [{
+                    label: "Number of vehicles entered/exited",
+                    data: [12, 19, 3, 5, 2, 3],
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(255, 159, 64, 1)',
+                        'rgba(255, 205, 86, 1)',
+                        'rgba(75, 192, 192, 1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(153, 102, 255, 1)',
+                        'rgba(201, 203, 207, 1)'
+                    ],
+                    borderColor: [
+                        'rgb(255, 99, 132)',
+                        'rgb(255, 159, 64)',
+                        'rgb(255, 205, 86)',
+                        'rgb(75, 192, 192)',
+                        'rgb(54, 162, 235)',
+                        'rgb(153, 102, 255)',
+                        'rgb(201, 203, 207)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    yAxis: {
+                        beginAtZero: true
+                    }
+                }
+            },
         });
     </script>
 {% endblock content %}

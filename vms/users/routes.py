@@ -11,10 +11,7 @@ blue = Blueprint('users',__name__,template_folder='templates')
 # User Home
 @blue.route('/user/home',methods=['GET','POST'])
 def home():
-    labels = ["January","February","March","April","May","June","July","August"]
-    values = [10,9,8,7,6,4,7,8]
-    colors = [ "#F7464A", "#46BFBD", "#FDB45C", "#FEDCBA","#ABCDEF", "#DDDDDD", "#ABCABC"  ]
-    return render_template('users/home.html',title='Home',set=zip(values, labels, colors))
+    return render_template('users/home.html',title='Home')
 
 
 # User Logout
