@@ -76,12 +76,12 @@
                             <!--Link RFID TAG-->
                             <li class="nav-item">
                                 {% if title == 'Tag RFID' %}
-                                    <a class="nav-link active" href="#">
+                                    <a class="nav-link active" href="{{url_for('tag_rfid.tag_rfid')}}">
                                         <i class="fas fa-tag"></i>
                                         Tag RFID
                                     </a>
                                 {% else %}
-                                    <a class="nav-link" href="#">
+                                    <a class="nav-link" href="{{url_for('tag_rfid.tag_rfid')}}">
                                         <i class="fas fa-tag"></i>
                                         Tag RFID
                                     </a>
@@ -89,13 +89,13 @@
                             </li>
                             <!--Import Vehicle Data-->
                             <li class="nav-item">
-                                {% if title == 'Import vehicle Data' %}
-                                    <a class="nav-link active" href="">
+                                {% if title == 'Import Vehicle Data' %}
+                                    <a class="nav-link active" href="{{url_for('import_vehicle_data.import_data')}}">
                                         <i class="fas fa-file-import"></i>
                                             Import Vehicle Data
                                     </a>
                                 {% else %}
-                                    <a class="nav-link" href="">
+                                    <a class="nav-link" href="{{url_for('import_vehicle_data.import_data')}}">
                                         <i class="fas fa-file-import"></i>
                                             Import Vehicle Data
                                     </a>

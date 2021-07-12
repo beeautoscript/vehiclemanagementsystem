@@ -26,9 +26,13 @@ from vms.user_login.routes import blue
 from vms.users.routes import blue
 from vms.admin.routes import blue
 from vms.users_add_vehicle.routes import blue
+from vms.tag_rfid.routes import blue
+from vms.import_vehicle_data.routes import blue
 
 # Register Blueprint
 app.register_blueprint(user_login.routes.blue,url_prefix='/')
 app.register_blueprint(users.routes.blue,url_prefix='/')
 app.register_blueprint(admin.routes.blue,url_prefix='/')
 app.register_blueprint(users_add_vehicle.routes.blue,url_prefix='/')
+app.register_blueprint(tag_rfid.routes.blue,url_prefix='/')
+app.register_blueprint(import_vehicle_data.routes.blue,url_prefix='/')

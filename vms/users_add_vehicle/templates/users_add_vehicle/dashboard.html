@@ -46,12 +46,17 @@
                 <tbody>
                     {% for i in registered_vehicle_record.items %}
                         <tr>
+                            <td>{{i.vehiclenum}}</td>
+                            <td>{{i.tagid}}</td>
+                            <td>{{i.ownername}}</td>
+                            <td>{{i.routeno}}</td>
+                            <td>{{i.makemodel}}</td>
                             <td>
-                                <td>{{i.vehiclenum}}</td>
-                                <td>{{i.tagid}}</td>
-                                <td>{{i.ownername}}</td>
-                                <td>{{i.routeno}}</td>
-                                <td>{{i.makemodel}}</td>
+                                <a href="{{url_for('users_add_vehicle.delete_vehicle',uid=i.id)}}"><span class="badge rounded-pill bg-danger">Delete</span></a>
+                                <a href="{{url_for('users_add_vehicle.update_vehicle',uid=i.id)}}"><span class="badge rounded-pill bg-secondary">Update</span></a>
+                                {% if i.tagid == None %}
+                                    <a href="{{url_for('users_add_vehicle.vehicle_tag',vehiclenum=i.vehiclenum)}}"><span class="badge rounded-pill bg-success">Tag RFID</span></a>
+                                {% endif %}
                             </td>
                         </tr>
                     {% endfor %}

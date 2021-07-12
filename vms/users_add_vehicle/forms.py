@@ -20,3 +20,21 @@ class RegisterVehicleForm(FlaskForm):
         vehicle = RegisteredVehicle.query.filter_by(vehiclenum=vehicleno.data).first()
         if vehicle:
             raise ValidationError(f'Vehicle number {vehicleno.data} is already registered')
+
+# Update Vehicle
+class UpdateVehicleForm(FlaskForm):
+    ownername = StringField('Owner Name',validators=[DataRequired()])
+    routeno = StringField('Route No.',validators=[DataRequired()])
+    makemodel = StringField('Make/Model',validators=[DataRequired()])
+    submit = SubmitField('Update')
+
+# Tag Vehicle
+class TagVehicleForm(FlaskForm):
+    tagid = StringField('RFID Tag Id',validators=[DataRequired()])
+    submit = SubmitField('Tag RFID')
+
+    # check if tag id is already assigned
+    def validate_tagid(self,tagid):
+        tag = RegisteredVehicle.query.filter_by(tagid=tagid.data).first()
+        if tag:
+            raise ValidationError('Tag is already assigned')

@@ -1,0 +1,28 @@
+{% extends 'users/layout.html'%}
+{% block content %}
+    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-1 mb-3 border-bottom">
+        <nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='currentColor'/%3E%3C/svg%3E&#34;);" aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{{url_for('users.home')}}">Dashboard</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Import Data</li>
+            </ol>
+        </nav>
+    </div>
+    <div class="card w-50 mt-4 shadow">
+        <div class="card-header fw-bold">
+            Import Vehicle Data
+        </div>
+        <div class="card-body">
+            <form action="" method="POST" enctype=multipart/form-data>
+                {{form.hidden_tag()}}
+                <div class="mb-3">
+                    {{form.file(class="form-control w-75")}}
+                    <small class="text-muted">.xlsx extensions are allowed. You can import upto 1MB file size</small>
+                </div>
+                <div class="mb-3">
+                    {{form.submit(class="btn btn-sm btn-success")}}
+                </div>
+            </form>
+        </div>
+      </div>
+{% endblock content %}
