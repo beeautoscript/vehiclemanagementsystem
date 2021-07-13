@@ -7,14 +7,14 @@
             </ol>
         </nav>
     </div>
-    <div class="mb-3">
+    <div class="mb-2 ms-5">
         <div class="row row-cols-1 row-cols-md-3 g-3">
             <div class="col-2 mb-5">
                 <div class="card h-100 bg-primary text-white shadow">
                     <div class="card-body px-4">
                         <div class="d-flex justify-content-between align-items-center mb-2">
                             <div class="me-2">
-                                <div class="display-5 text-white">0</div>
+                                <div class="display-5 text-white">30</div>
                                 <div class="card-text">Total vehicles inside premises</div>
                             </div>
                         </div>
@@ -26,7 +26,7 @@
                     <div class="card-body px-4">
                         <div class="d-flex justify-content-between align-items-center mb-2">
                             <div class="me-2">
-                                <div class="display-5 ">0</div>
+                                <div class="display-5 ">10</div>
                                 <div class="card-text ">Total vehicles exited from premises</div>
                             </div>
                         </div>
@@ -38,14 +38,14 @@
                     <div class="card-body px-4">
                         <div class="d-flex justify-content-between align-items-center mb-2">
                             <div class="me-2">
-                                <div class="display-5 text-white">0</div>
+                                <div class="display-5 text-white">1 Hours</div>
                                 <div class="card-text">Average time spent by vehicles inside premises</div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="col-2 mb-5">
+            <!-- <div class="col-2 mb-5">
                 <div class="card h-100 shadow text-white" style="background-color: teal;">
                     <div class="card-body px-4">
                         <div class="d-flex justify-content-between align-items-center mb-2">
@@ -56,13 +56,13 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> -->
             <div class="col-2 mb-5">
                 <div class="card h-100 shadow text-white" style="background-color: indigo;"> 
                     <div class="card-body px-4">
                         <div class="d-flex justify-content-between align-items-center mb-2">
                             <div class="me-2">
-                                <div class="display-5 text-white">0</div>
+                                <div class="display-5 text-white">20</div>
                                 <div class="card-text">Total Unregistered Vehicles</div>
                             </div>
                         </div>
@@ -93,7 +93,7 @@
             <div class="col-lg-3 mb-5">
                 <div class="card shadow h-100">
                     <div class="card-header bg-light px-4">
-                       <h5 class="card-title">Vehicles Trips</h5>
+                       <h5 class="card-title">Vehicle Trips</h5>
                     </div>
                     <div class="card-body p-4">
                         <div class="d-flex h-100 w-100 align-items-center justify-content-center">
@@ -193,47 +193,56 @@
         var myChart = new Chart(ctx,{
             type: 'line',
             data: {
-                //x-axis
-                labels: ['0', '5', '10', '15', '20'],
-                datasets: [{
-                    label: "Number of vehicles entered/exited",
-                    data: [12, 19, 3, 5, 2, 3],
-                    backgroundColor: [
-                        'rgba(255, 99, 132, 1)',
-                        'rgba(255, 159, 64, 1)',
-                        'rgba(255, 205, 86, 1)',
-                        'rgba(75, 192, 192, 1)',
-                        'rgba(54, 162, 235, 1)',
-                        'rgba(153, 102, 255, 1)',
-                        'rgba(201, 203, 207, 1)'
-                    ],
-                    borderColor: [
-                        'rgb(255, 99, 132)',
-                        'rgb(255, 159, 64)',
-                        'rgb(255, 205, 86)',
-                        'rgb(75, 192, 192)',
-                        'rgb(54, 162, 235)',
-                        'rgb(153, 102, 255)',
-                        'rgb(201, 203, 207)'
-                    ],
-                    borderWidth: 1
-                }]
+                labels: [0,3,6,9,12,15,18,21,24],
+                datasets: [
+                    {
+                        label: 'Vehicles Entered',
+                        data: [12,19,3,5,2,3],
+                        borderColor: 'rgb(255, 99, 132)',
+                        backgroundColor: 'rgb(255, 99, 132,0.5)',
+                        yAxisID: 'y',
+                    },
+                    {
+                        label: 'Vehicles Exited',
+                        data: [3,6,8,9,12,15],
+                        borderColor: 'rgb(54, 162, 235)',
+                        backgroundColor: 'rgb(54, 162, 235,0.5)',
+                        yAxisID: 'y1',
+                    }
+                ]
             },
             options: {
-                scales: {
-                    yAxis: {
-                        beginAtZero: true
-                    }
+                responsive: true,
+                interaction: {
+                    mode: 'index',
+                    intersect: false,
                 },
+                stacked: false,
                 plugins: {
+                   
                     subtitle: {
                         display: true,
                         text: 'Hours',
                         position: 'bottom'
                     }
+                },
+                scales: {
+                    y: {
+                        type: 'linear',
+                        display: true,
+                        position: 'left',
+                    },
+                    y1: {
+                        type: 'linear',
+                        display: true,
+                        position: 'right',
+                        grid: {
+                            drawOnChartArea: false,
+                        }
+                    }
                 }
+            }
 
-            },
         });
     </script>
 {% endblock content %}

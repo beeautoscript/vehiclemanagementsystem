@@ -78,12 +78,12 @@
                                 {% if title == 'Tag RFID' %}
                                     <a class="nav-link active" href="{{url_for('tag_rfid.tag_rfid')}}">
                                         <i class="fas fa-tag"></i>
-                                        Tag RFID
+                                        Tag Registration
                                     </a>
                                 {% else %}
                                     <a class="nav-link" href="{{url_for('tag_rfid.tag_rfid')}}">
                                         <i class="fas fa-tag"></i>
-                                        Tag RFID
+                                        Tag Registration
                                     </a>
                                 {% endif %}
                             </li>
@@ -126,7 +126,7 @@
                                                 <path d="M9.5 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5h3zm-3-1A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3z"/>
                                             </svg>
                                         </span>
-                                        Waiting time
+                                        Wait time
                                     </a>
                                 </li>
                                 <li class="nav-item">
@@ -142,10 +142,15 @@
                                     </a>
                                 </li>
                                 <hr>
-                                <div class="d-grid gap-2 col-5 mx-auto">
+                                <div class="container-fluid">
+                                    <div class="text-center">
                                     <img src="{{url_for('static',filename='images/'+current_user.image_file)}}" alt="" width="64" height="64" class="rounded-circle">
+                                    </div>
+                                    <div class="text-center mt-1">
+                                    <small class="ms-2 text-center">Welcome {{current_user.username}}</small>
+                                    <small class="d-grid gap-2 col-lg mx-auto mt-1 ms-1" id="lblgreeting"></small>
+                                    </div>
                                 </div>
-                                <p class="d-grid gap-2 col-lg mx-auto mt-2 ms-2" id="lblgreeting"></p>
                             </ul>
                         </ul>
                     </div>
@@ -186,7 +191,7 @@
             else if (hrs >= 17 && hrs <= 24)
                 greet = 'Good Evening';
 
-            document.getElementById('lblgreeting').innerHTML = "Welcome {{current_user.username}}, "+ greet;    
+            document.getElementById('lblgreeting').innerHTML = greet;    
         </script>
   </body>
 </html>
