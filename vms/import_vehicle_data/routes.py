@@ -24,6 +24,7 @@ def allowed_file(filename):
 
 # Import Vehicle Data
 @blue.route('/import/data',methods=['GET','POST'])
+@login_required
 def import_data():
     form = ImportDataForm()
     if form.validate_on_submit():

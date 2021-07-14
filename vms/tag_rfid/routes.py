@@ -9,6 +9,7 @@ blue = Blueprint('tag_rfid',__name__,template_folder='templates')
 
 # Tag RFID to Registered Vehicles
 @blue.route('/tag/rfid',methods=['GET','POST'])
+@login_required
 def tag_rfid():
     form = TagRegisteredVehicleForm()
     registered_vehicle_length = len(RegisteredVehicle.query.filter_by(user_id=current_user.id).all())

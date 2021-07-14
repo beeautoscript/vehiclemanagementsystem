@@ -76,23 +76,43 @@
     <div class="mb3">
         <div class="row">
             <!--PieChart-->
-            <div class="col-lg-3 mb-5">
-                <div class="card shadow h-100">
-                    <div class="card-header bg-light px-4">
-                       <h5 class="card-title">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pie-chart-fill" viewBox="0 0 16 16">
-                                <path d="M15.985 8.5H8.207l-5.5 5.5a8 8 0 0 0 13.277-5.5zM2 13.292A8 8 0 0 1 7.5.015v7.778l-5.5 5.5zM8.5.015V7.5h7.485A8.001 8.001 0 0 0 8.5.015z"/>
-                            </svg>
-                            Tag - Untagged Vehicles
-                        </h5>
-                    </div>
-                    <div class="card-body p-4">
-                        <div class="d-flex h-100 w-100 align-items-center justify-content-center">
-                            <div class="w-100" style="max-width: 20rem"><canvas id="myPieChart"></canvas></div>
+            {% if count_untagged == 0 and count_tagged == 0%}
+                <div class="col-lg-3 mb-5">
+                    <div class="card shadow h-100">
+                        <div class="card-header bg-light px-4">
+                            <h5 class="card-title">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pie-chart-fill" viewBox="0 0 16 16">
+                                    <path d="M15.985 8.5H8.207l-5.5 5.5a8 8 0 0 0 13.277-5.5zM2 13.292A8 8 0 0 1 7.5.015v7.778l-5.5 5.5zM8.5.015V7.5h7.485A8.001 8.001 0 0 0 8.5.015z"/>
+                                </svg>
+                                Tag - Untagged Vehicles
+                            </h5>
+                        </div>
+                        <div class="card-body p-4">
+                            <div class="d-flex h-100 w-100 align-items-center justify-content-center">
+                                <div class="w-100 text-center" style="max-width: 20rem">Data not available</div>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
+            {% else %}
+                <div class="col-lg-3 mb-5">
+                    <div class="card shadow h-100">
+                        <div class="card-header bg-light px-4">
+                            <h5 class="card-title">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pie-chart-fill" viewBox="0 0 16 16">
+                                    <path d="M15.985 8.5H8.207l-5.5 5.5a8 8 0 0 0 13.277-5.5zM2 13.292A8 8 0 0 1 7.5.015v7.778l-5.5 5.5zM8.5.015V7.5h7.485A8.001 8.001 0 0 0 8.5.015z"/>
+                                </svg>
+                                Tag - Untagged Vehicles
+                            </h5>
+                        </div>
+                        <div class="card-body p-4">
+                            <div class="d-flex h-100 w-100 align-items-center justify-content-center">
+                                <div class="w-100" style="max-width: 20rem"><canvas id="myPieChart"></canvas></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}    
             <!--BarChart-->
             <div class="col-lg-3 mb-5">
                 <div class="card shadow h-100">
@@ -135,16 +155,17 @@
     <script>
         //PieChart
         var ctx = document.getElementById('myPieChart').getContext('2d');
-        const DATA_COUNT = 5;
-        const NUMBER_CFG = {count: DATA_COUNT, min: 0, max: 100};
+        var tagged_data_count = "{{count_tagged}}";
+        var untagged_data_count = "{{count_untagged}}";
+        //const NUMBER_CFG = {count: DATA_COUNT, min: 0, max: 100};
 
         var myChart = new Chart(ctx, {
             type: 'pie',
             data: {
                 labels: ['Tagged', 'Untagged'],
                 datasets: [{
-                    data: [12, 19],
-                    backgroundColor:  ['rgba(255, 99, 132, 1)','rgba(54, 162, 235, 2)'],
+                    data: [tagged_data_count,untagged_data_count],
+                    backgroundColor:  ['rgba(255, 99, 132, 2)','rgba(54, 162, 235, 2)'],
                     hoverOffset: 1,
                     borderWidth: 1
                 }]
