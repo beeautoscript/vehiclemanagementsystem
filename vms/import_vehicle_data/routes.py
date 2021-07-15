@@ -33,21 +33,29 @@ def import_data():
         if data_file and allowed_file(data_file.filename):
             filename = secure_filename(data_file.filename)
             data_file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-            # Read excel document
-            excel_data_df = pandas.read_excel('/tmp/'+data_file.filename, sheet_name='Sheet1')
-            # Convert to Json
-            convert_to_json = excel_data_df.to_json(orient='records')
-            # Make Json to List Compatible
-            data_dict_list = json.loads(convert_to_json)
+            # check if excel file is empty
+            if os.path.getsize('/tmp/'+data_file.filename) == 0:
+                flash(f"Invalid file {data_file.filename}",'danger')
+                return redirect(url_for('import_vehicle_data.import_data'))
+            try:
+                # Read excel document
+                excel_data_df = pandas.read_excel('/tmp/'+data_file.filename, sheet_name='Sheet1')
+                # Convert to Json
+                convert_to_json = excel_data_df.to_json(orient='records')
+                # Make Json to List Compatible
+                data_dict_list = json.loads(convert_to_json)
 
-            # Add Data to Database
-            for i in data_dict_list:
-                vehicle = RegisteredVehicle(vehiclenum=i['VehicleNo'],tagid=i['TagId'],ownername=i['OwnerName'],routeno=i['RouteNo'],makemodel=i['MakeModel'],uservehicleregistered=current_user)
-                db.session.add(vehicle)
-                db.session.commit()
+                # Add Data to Database
+                for i in data_dict_list:
+                    vehicle = RegisteredVehicle(vehiclenum=i['VehicleNo'],tagid=i['TagId'],ownername=i['OwnerName'],routeno=i['RouteNo'],makemodel=i['MakeModel'],uservehicleregistered=current_user)
+                    db.session.add(vehicle)
+                    db.session.commit()
 
-            flash(f"Data from {data_file.filename} saved in database successfully",'success')
-            return redirect(url_for('users_add_vehicle.dashboard'))
+                flash(f"Data from {data_file.filename} saved in database successfully",'success')
+                return redirect(url_for('users_add_vehicle.dashboard'))
+            except Exception as error:
+                flash(f"Invalid file {data_file.filename}",'danger')
+                return redirect(url_for('import_vehicle_data.import_data'))    
         else:
             flash(f"Invalid file {data_file.filename}",'danger')
             return redirect(url_for('import_vehicle_data.import_data'))

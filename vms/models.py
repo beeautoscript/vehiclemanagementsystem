@@ -41,3 +41,16 @@ class RegisteredVehicle(db.Model):
     
     def __repr__(self):
         return f"{self.vehiclenum}"
+
+# Vehicle On Premises
+class VehicleOnPremises(db.Model):
+    __bind_key__ = 'vehicleonpremises'
+    id = db.Column(db.Integer,primary_key=True)
+    tagid = db.Column(db.String(20),unique=True)
+    on_premise = db.Column(db.Boolean())
+    off_premise = db.Column(db.Boolean())
+    entrytime = db.Column(db.String(20))
+    exitime = db.Column(db.String(20))
+
+    def __repr__(self):
+        return f"{self.tagid,self.entrytime,self.exitime}"
