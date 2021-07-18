@@ -43,3 +43,4 @@ def vmsexit():
     db.session.commit()
     return json.dumps({'result':'successfully_updated_exit_data','status':200})
 
+
