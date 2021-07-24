@@ -16,8 +16,8 @@ blue = Blueprint('users',__name__,template_folder='templates')
 def home():
     untagged_vehicles = len(RegisteredVehicle.query.filter_by(user_id=current_user.id,tagid=None).all())
     tagged_vehicles = len(RegisteredVehicle.query.filter(RegisteredVehicle.user_id==current_user.id,RegisteredVehicle.tagid != None).all())
-    vehicle_inside_premises = len(VehicleOnPremises.query.filter(VehicleOnPremises.on_premise != False).all())
-    vehicle_exited_premises = len(VehicleOnPremises.query.filter(VehicleOnPremises.off_premise != False).all())
+    vehicle_inside_premises = len(VehicleOnPremises.query.filter(VehicleOnPremises.status != False).all())
+    vehicle_exited_premises = len(VehicleOnPremises.query.filter(VehicleOnPremises.status != True).all())
     
     # average time of vehicles inside premises
     if vehicle_inside_premises == 0:

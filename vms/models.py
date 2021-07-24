@@ -20,35 +20,40 @@ class Users(db.Model,UserMixin):
     username = db.Column(db.String(5))
     password = db.Column(db.String(10),nullable=False)
     image_file = db.Column(db.String(20),nullable=False,default='default_user.png')
-    registeredvehicle = db.relationship('RegisteredVehicle',backref='uservehicleregistered',lazy=True,cascade='all,delete-orphan')
-
+    registeredvehicle = db.relationship('RegisteredVehicle',backref='uservehicleregistered',lazy='joined',cascade='all,delete-orphan')
     def __repr__(self):
         return f"Users('{self.username}')"
 
 # Registered Vehicle
 class RegisteredVehicle(db.Model):
-    __bind_key__ = 'registeredvechicle'
+    __bind_key__ = 'registeredvehicles'
     id = db.Column(db.Integer,primary_key=True)
     vehiclenum = db.Column(db.String(10),unique=True)
     tagid = db.Column(db.String(20),unique=True)
     ownername = db.Column(db.String(20),nullable=False)
     routeno = db.Column(db.Integer,nullable=False)
     makemodel = db.Column(db.Integer,nullable=False)
-    entrytime = db.Column(db.String(20),nullable=True)
-    exitime = db.Column(db.String(20),nullable=True)
-    date_created = db.Column(db.DateTime(),nullable=False,default=datetime.now)
+    registered_on = db.Column(db.DateTime(),nullable=False,default=datetime.now)
+    entryexitimes = db.relationship('Entryexitime',backref="vechentryexitime",lazy='joined')
     user_id = db.Column(db.Integer,db.ForeignKey('users.id'),nullable=False)
     
     def __repr__(self):
         return f"{self.vehiclenum}"
+
+# Vehicle Entry Exit
+class Entryexitime(db.Model):
+    __bind_key__ = 'entryexitime'
+    id = db.Column(db.Integer,primary_key=True)
+    entrytime = db.Column(db.String(20))
+    exitime = db.Column(db.String(20))
+    registeredvehicle_id = db.Column(db.Integer,db.ForeignKey('registered_vehicle.id'))
 
 # Vehicle On Premises
 class VehicleOnPremises(db.Model):
     __bind_key__ = 'vehicleonpremises'
     id = db.Column(db.Integer,primary_key=True)
     tagid = db.Column(db.String(20),unique=True)
-    on_premise = db.Column(db.Boolean())
-    off_premise = db.Column(db.Boolean())
+    status = db.Column(db.Boolean())
     entrytime = db.Column(db.String(20))
     exitime = db.Column(db.String(20))
 

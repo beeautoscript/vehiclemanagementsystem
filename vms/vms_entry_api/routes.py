@@ -16,7 +16,7 @@ def vmsentry():
     if len(VehicleOnPremises.query.filter(VehicleOnPremises.tagid == data[0]['tagid']).all()) == 0:
         # new tag vehicle entered premises
         # add new tag entry in database
-        new_tag_entry = VehicleOnPremises(tagid=data[0]['tagid'],entrytime=data[0]['timestamp'],on_premise=True,off_premise=False)
+        new_tag_entry = VehicleOnPremises(tagid=data[0]['tagid'],entrytime=data[0]['timestamp'],status=True)
         db.session.add(new_tag_entry)
         db.session.commit()
         return json.dumps({'result':'successfully_added_new_tag','status':200})
@@ -25,8 +25,7 @@ def vmsentry():
         kwargs = {'tagid':str(data[0]['tagid'])}
         vehicle_table_id = VehicleOnPremises.query.filter_by(**kwargs).first()
         vehicle_table_id.entrytime = str(data[0]['timestamp'])
-        vehicle_table_id.on_premise = True
-        vehicle_table_id.off_premise = False
+        vehicle_table_id.status = True
         db.session.commit()
         return json.dumps({'result':'successfully_updated_entry_data','status':200})
 
@@ -38,8 +37,7 @@ def vmsexit():
     kwargs = {'tagid':str(data[0]['tagid'])}
     vehicle_table_id = VehicleOnPremises.query.filter_by(**kwargs).first()
     vehicle_table_id.exitime = str(data[0]['timestamp'])
-    vehicle_table_id.on_premise = False
-    vehicle_table_id.off_premise = True
+    vehicle_table_id.status = False
     db.session.commit()
     return json.dumps({'result':'successfully_updated_exit_data','status':200})
 
