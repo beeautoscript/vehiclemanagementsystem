@@ -20,7 +20,7 @@ class Users(db.Model,UserMixin):
     username = db.Column(db.String(5))
     password = db.Column(db.String(10),nullable=False)
     image_file = db.Column(db.String(20),nullable=False,default='default_user.png')
-    registeredvehicle = db.relationship('RegisteredVehicle',backref='uservehicleregistered',lazy='joined',cascade='all,delete-orphan')
+    registeredvehicle = db.relationship('RegisteredVehicle',backref='uservehicleregistered',cascade='all,delete-orphan')
     def __repr__(self):
         return f"Users('{self.username}')"
 
@@ -34,7 +34,7 @@ class RegisteredVehicle(db.Model):
     routeno = db.Column(db.Integer,nullable=False)
     makemodel = db.Column(db.Integer,nullable=False)
     registered_on = db.Column(db.DateTime(),nullable=False,default=datetime.now)
-    entryexitimes = db.relationship('Entryexitime',backref="vechentryexitime",lazy='joined')
+    entryexitimes = db.relationship('Entryexitime',backref="vechentryexitime")
     user_id = db.Column(db.Integer,db.ForeignKey('users.id'),nullable=False)
     
     def __repr__(self):
