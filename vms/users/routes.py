@@ -35,7 +35,11 @@ def home():
 
     return render_template('users/home.html',title='Home',count_untagged=untagged_vehicles,count_tagged=tagged_vehicles,count_vehicle_inside_premises=vehicle_inside_premises,count_vehicle_exit_premises=vehicle_exited_premises,average_time=average_time)
 
-
+# Total Vehicle inside premises
+@blue.route('/user/onpremises',methods=['GET','POST'])
+@login_required
+def onpremises():
+    return render_template('users/onpremises.html',title='Vehicle on premises')
 # User Logout
 @blue.route('/logout')
 @login_required
