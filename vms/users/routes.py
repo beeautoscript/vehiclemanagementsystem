@@ -18,7 +18,8 @@ def home():
     tagged_vehicles = len(RegisteredVehicle.query.filter(RegisteredVehicle.user_id==current_user.id,RegisteredVehicle.tagid != None).all())
     vehicle_inside_premises = len(VehicleOnPremises.query.filter(VehicleOnPremises.status != False).all())
     vehicle_exited_premises = len(VehicleOnPremises.query.filter(VehicleOnPremises.status != True).all())
-    
+    registered_vehicle = len(VehicleOnPremises.query.filter(VehicleOnPremises.registered != True).all())
+
     # average time of vehicles inside premises
     if vehicle_inside_premises == 0:
         average_time = 0
@@ -33,13 +34,25 @@ def home():
         # seconds = (average_time_in_minutes*3600) % 60
         # avrerage_time = ("%d:%02d.%02d" % (hours, minutes, seconds))
 
-    return render_template('users/home.html',title='Home',count_untagged=untagged_vehicles,count_tagged=tagged_vehicles,count_vehicle_inside_premises=vehicle_inside_premises,count_vehicle_exit_premises=vehicle_exited_premises,average_time=average_time)
+    return render_template('users/home.html',title='Home',count_untagged=untagged_vehicles,count_tagged=tagged_vehicles,count_vehicle_inside_premises=vehicle_inside_premises,count_vehicle_exit_premises=vehicle_exited_premises,average_time=average_time,registered_vehicle=registered_vehicle)
 
 # Total Vehicle inside premises
 @blue.route('/user/onpremises',methods=['GET','POST'])
 @login_required
 def onpremises():
-    return render_template('users/onpremises.html',title='Vehicle on premises')
+    page = request.args.get('page',1,type=int)
+    vehicle_inside_premises = len(VehicleOnPremises.query.filter(VehicleOnPremises.status != False).all())
+    onpremises_vehicle_record = VehicleOnPremises.query.filter_by(status=True).paginate(page=page,per_page=10)
+    return render_template('users/onpremises.html',title='Vehicle on premises',count_vehicle_inside_premises=vehicle_inside_premises,onpremises_vehicle_record=onpremises_vehicle_record)
+
+# Total Vehice exited premises
+@blue.route('/user/offpremises',methods=['GET','POST'])
+@login_required
+def offpremises():
+    page = request.args.get('page',1,type=int)
+    vehicle_outside_premises = len(VehicleOnPremises.query.filter(VehicleOnPremises.status != True).all())
+    offpremises_vehicle_record = VehicleOnPremises.query.filter_by(status=False).paginate(page=page,per_page=10)
+    return render_template('users/offpremises.html',title='Vehicles exited premises',count_vehicle_outside_premises=vehicle_outside_premises,offpremises_vehicle_record=offpremises_vehicle_record)
 # User Logout
 @blue.route('/logout')
 @login_required

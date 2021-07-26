@@ -36,6 +36,10 @@ def vmsentry():
         add_entry_time = Entryexitime(entrytime=str(data[0]['timestamp']),registeredvehicle_id=registered_vehicle_table_id.id)
         db.session.add(add_entry_time)
         db.session.commit()
+        #update registerd vehicle status : VehicleOnPremises DB
+        kwargs = {'tagid':str(data[0]['epc_id'])}
+        vehicle_table_id = VehicleOnPremises.query.filter_by(**kwargs).first()
+        vehicle_table_id.registered = True
         return json.dumps({'result':'entry_time_entryexit_db','status':200})
     else:
         return json.dumps({'result':'entry_time_vehicleonpremises_db','status':200})

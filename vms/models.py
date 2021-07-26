@@ -54,6 +54,7 @@ class VehicleOnPremises(db.Model):
     id = db.Column(db.Integer,primary_key=True)
     tagid = db.Column(db.String(20),unique=True)
     status = db.Column(db.Boolean())
+    registered = db.Column(db.Boolean())
     entrytime = db.Column(db.String(20))
     exitime = db.Column(db.String(20))
 
