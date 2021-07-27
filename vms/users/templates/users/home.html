@@ -131,8 +131,9 @@
                     </div>
                     <div class="card-body p-4">
                         <div class="d-flex h-100 w-100 align-items-center justify-content-center">
-                            <div class="w-100"><img src="{{url_for('static',filename='images/default_barchart.svg')}}" class="rounded mx-auto d-block" alt="..."></div>
-                            <div class="w-100 text-center fw-bold" style="max-width: 20rem">Data not available</div>
+                            <div class="w-100" style="max-width: 20rem"><canvas id="myBarChart"></canvas></div>
+                            <!-- <div class="w-100"><img src="{{url_for('static',filename='images/default_barchart.svg')}}" class="rounded mx-auto d-block" alt="..."></div>
+                            <div class="w-100 text-center fw-bold" style="max-width: 20rem">Data not available</div> -->
                         </div>
                     </div>
                 </div>
@@ -161,41 +162,44 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js@3.4.1/dist/chart.min.js"></script>
     <script>
         //PieChart
-        var ctx = document.getElementById('myPieChart').getContext('2d');
         var tagged_data_count = "{{count_tagged}}";
         var untagged_data_count = "{{count_untagged}}";
-        //const NUMBER_CFG = {count: DATA_COUNT, min: 0, max: 100};
-
-        var myChart = new Chart(ctx, {
-            type: 'pie',
-            data: {
-                labels: ['Tagged', 'Untagged'],
-                datasets: [{
-                    data: [tagged_data_count,untagged_data_count],
-                    backgroundColor:  ['rgba(60, 179, 113, 2)','rgba(54, 162, 235, 2)'],
-                    hoverOffset: 1,
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                responsive: true,
-                plugins: {
-                    legend: {
-                        position: 'top',
-                    },
-                    
+        if (tagged_data_count.length == 0 && untagged_data_count.length == 0) {
+            exit;
+        }else{
+            var ctx = document.getElementById('myPieChart').getContext('2d');
+            var myChart = new Chart(ctx, {
+                type: 'pie',
+                data: {
+                    labels: ['Tagged', 'Untagged'],
+                    datasets: [{
+                        data: [tagged_data_count,untagged_data_count],
+                        backgroundColor:  ['rgba(60, 179, 113, 2)','rgba(54, 162, 235, 2)'],
+                        hoverOffset: 1,
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                        },
+                    }
                 }
-            }
-        });
+            });
+        }    
     </script>
     <script>
         //BarChart
         var ctx = document.getElementById('myBarChart').getContext('2d');
+        datalist = ["Monday", 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
         var myChart = new Chart(ctx,{
             type: 'bar',
             data: {
                 //x-axis
-                labels: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+                 //labels: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+                labels: datalist,
                 datasets: [{
                     label: "Last 5 days Trips",
                     data: [12, 19, 3, 5, 2, 3],
@@ -229,62 +233,62 @@
             },
         });
     </script>
-    <script>
+   <!-- <script>
         //LineGraph
-        var ctx = document.getElementById('myLineGraph').getContext('2d');
-        var myChart = new Chart(ctx,{
-            type: 'line',
-            data: {
-                labels: [0,3,6,9,12,15,18,21,24],
-                datasets: [
-                    {
-                        label: 'Vehicles Entered',
-                        data: [12,19,3,5,2,3],
-                        borderColor: 'rgb(255, 99, 132)',
-                        backgroundColor: 'rgb(255, 99, 132,0.5)',
-                        yAxisID: 'y',
-                    },
-                    {
-                        label: 'Vehicles Exited',
-                        data: [3,6,8,9,12,15],
-                        borderColor: 'rgb(54, 162, 235)',
-                        backgroundColor: 'rgb(54, 162, 235,0.5)',
-                        yAxisID: 'y1',
-                    }
-                ]
-            },
-            options: {
-                responsive: true,
-                interaction: {
-                    mode: 'index',
-                    intersect: false,
-                },
-                stacked: false,
-                plugins: {
-                   
-                    subtitle: {
-                        display: true,
-                        text: 'Hours',
-                        position: 'bottom'
-                    }
-                },
-                scales: {
-                    y: {
-                        type: 'linear',
-                        display: true,
-                        position: 'left',
-                    },
-                    y1: {
-                        type: 'linear',
-                        display: true,
-                        position: 'right',
-                        grid: {
-                            drawOnChartArea: false,
-                        }
-                    }
-                }
+        /* var ctx = document.getElementById('myLineGraph').getContext('2d');
+         var myChart = new Chart(ctx,{
+             type: 'line',
+             data: {
+                 labels: [0,3,6,9,12,15,18,21,24],
+                 datasets: [
+                     {
+                         label: 'Vehicles Entered',
+                         data: [12,19,3,5,2,3],
+                         borderColor: 'rgb(255, 99, 132)',
+                         backgroundColor: 'rgb(255, 99, 132,0.5)',
+                         yAxisID: 'y',
+                     },
+                     {
+                         label: 'Vehicles Exited',
+                         data: [3,6,8,9,12,15],
+                         borderColor: 'rgb(54, 162, 235)',
+                         backgroundColor: 'rgb(54, 162, 235,0.5)',
+                         yAxisID: 'y1',
+                     }
+                 ]
+             },
+             options: {
+                 responsive: true,
+                 interaction: {
+                     mode: 'index',
+                     intersect: false,
+                 },
+                 stacked: false,
+                 plugins: {
+                  
+                     subtitle: {
+                         display: true,
+                         text: 'Hours',
+                         position: 'bottom'
+                     }
+                 },
+                 scales: {
+                     y: {
+                         type: 'linear',
+                         display: true,
+                         position: 'left',
+                     },
+                     y1: {
+                         type: 'linear',
+                         display: true,
+                         position: 'right',
+                         grid: {
+                             drawOnChartArea: false,
+                         }
+                     }
+                 }
             }
 
-        });
-    </script>
+        });*/
+    </script>-->
 {% endblock content %}

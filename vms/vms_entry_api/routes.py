@@ -25,6 +25,7 @@ def vmsentry():
         kwargs = {'tagid':str(data[0]['epc_id'])}
         vehicle_table_id = VehicleOnPremises.query.filter_by(**kwargs).first()
         vehicle_table_id.entrytime = str(data[0]['timestamp'])
+        vehicle_table_id.exitime = None
         vehicle_table_id.status = True
         db.session.commit()
 

@@ -3,6 +3,8 @@ from vms import app,db,login_manager,bcrypt
 from flask_login import login_user, current_user, logout_user, login_required
 from vms.models import Users,RegisteredVehicle,VehicleOnPremises
 import datetime
+import calendar
+import json
 # from datetime import datetime
 # from datetime import timedelta
 
@@ -10,6 +12,13 @@ import datetime
 # Blueprint object
 blue = Blueprint('users',__name__,template_folder='templates')
 
+# func count occurence
+def occurencex(xlist,xsearch):
+    count = 0
+    for i in xlist:
+        if i == xsearch:
+            count = count +1
+    return count
 
 # User Home
 @blue.route('/user/home',methods=['GET','POST'])
@@ -21,17 +30,17 @@ def home():
     vehicle_exited_premises = len(VehicleOnPremises.query.filter(VehicleOnPremises.status != True).all())
     
     # average time of vehicles inside premises
-    if vehicle_inside_premises == 0:
+    if len(db.session.query(VehicleOnPremises).filter(VehicleOnPremises.entrytime != None,VehicleOnPremises.exitime != None).all()) == 0:
         average_time = 0
     else:
         average_time_list = []
         total_avergae_time = 0
         query_db = db.session.query(VehicleOnPremises).filter(VehicleOnPremises.entrytime != None,VehicleOnPremises.exitime != None).all()
         for i in query_db:
-            exitime = i.exitime.split(' ')[1]+" "+i.exitime.split(' ')[2]
-            entrytime = i.entrytime.split(' ')[1]+" "+i.entrytime.split(' ')[2]
-            exitformat = datetime.datetime.strptime(exitime,'%I:%M:%S %p')
-            entryformat = datetime.datetime.strptime(entrytime,'%I:%M:%S %p')
+            exitime = i.exitime
+            entrytime = i.entrytime
+            exitformat = datetime.datetime.strptime(exitime,'%d-%m-%Y %I:%M:%S %p')
+            entryformat = datetime.datetime.strptime(entrytime,'%d-%m-%Y %I:%M:%S %p')
             td = exitformat - entryformat
             average_time_list.append(int(td.total_seconds()))
 
@@ -42,7 +51,36 @@ def home():
         average_time_format = datetime.timedelta(seconds=total_seconds)
         average_time=str(average_time_format)
 
-    return render_template('users/home.html',title='Home',count_untagged=untagged_vehicles,count_tagged=tagged_vehicles,count_vehicle_inside_premises=vehicle_inside_premises,count_vehicle_exit_premises=vehicle_exited_premises,average_time=average_time)
+    # Vechile trips in last 5 days
+    
+    # sorted list of all the vehicles which have completed trip
+    dbq = db.session.query(VehicleOnPremises).filter(VehicleOnPremises.status == False).all()
+    trip_list = []
+    uniq_list = []
+    trip_dict = {}
+
+    if len(dbq) == 0:
+        print("Vehicle Trips not available")
+        trip_dict = {}
+    else:
+        for i in dbq:
+            trip_list.append(i.exitime.split(' ')[0])
+        # sort list
+        sorted_list = sorted(trip_list,key=lambda x: datetime.datetime.strptime(x,'%d-%m-%Y'))
+        # unique list
+        for i in sorted_list:
+            if i not in uniq_list:
+                uniq_list.append(i)
+        # unique list should be greater than 5
+        if len(uniq_list) < 5:
+            trip_dict = {}
+        else:
+            for i in uniq_list:
+                trip_dict[i] = occurencex(trip_list,i)
+
+        trip_dict = {'03-06-2019':4,'04-06-2019':2,'05-06-2019':2,'06-06-2019':2,'07-06-2019':1}
+        
+    return render_template('users/home.html',title='Home',count_untagged=untagged_vehicles,count_tagged=tagged_vehicles,count_vehicle_inside_premises=vehicle_inside_premises,count_vehicle_exit_premises=vehicle_exited_premises,average_time=average_time,trip_dict=trip_dict)
 
 # Total Vehicle inside premises
 @blue.route('/user/onpremises',methods=['GET','POST'])
