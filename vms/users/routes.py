@@ -52,7 +52,6 @@ def home():
         average_time=str(average_time_format)
 
     # Vechile trips in last 5 days
-    
     # sorted list of all the vehicles which have completed trip
     dbq = db.session.query(VehicleOnPremises).filter(VehicleOnPremises.status == False).all()
     trip_list = []
@@ -71,16 +70,15 @@ def home():
         for i in sorted_list:
             if i not in uniq_list:
                 uniq_list.append(i)
-        # unique list should be greater than 5
-        if len(uniq_list) < 5:
+        # unique list should be = 5
+        if len(uniq_list) != 5:
             trip_dict = {}
         else:
-            for i in uniq_list:
-                trip_dict[i] = occurencex(trip_list,i)
-
-        trip_dict = {'03-06-2019':4,'04-06-2019':2,'05-06-2019':2,'06-06-2019':2,'07-06-2019':1}
-        
-    return render_template('users/home.html',title='Home',count_untagged=untagged_vehicles,count_tagged=tagged_vehicles,count_vehicle_inside_premises=vehicle_inside_premises,count_vehicle_exit_premises=vehicle_exited_premises,average_time=average_time,trip_dict=trip_dict)
+            for i in range(0,len(uniq_list)-1):
+                trip_dict[uniq_list[i]] = occurencex(trip_list,uniq_list[i])    
+         
+    return render_template('users/home.html',title='Home',count_untagged=untagged_vehicles,count_tagged=tagged_vehicles,count_vehicle_inside_premises=vehicle_inside_premises,
+    count_vehicle_exit_premises=vehicle_exited_premises,average_time=average_time,trip_dict=json.dumps(trip_dict),len_trip=len(trip_dict))
 
 # Total Vehicle inside premises
 @blue.route('/user/onpremises',methods=['GET','POST'])
