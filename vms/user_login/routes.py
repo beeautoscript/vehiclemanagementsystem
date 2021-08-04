@@ -28,6 +28,9 @@ def login():
                 login_user(user,remember=form.remember.data)
                 next_page = request.args.get('next')
                 return redirect(next_page) if next_page else redirect(url_for('users.home'))
+        else:
+            flash(f'Invalid username or password','danger')
+            return redirect(url_for('user_login.login'))
 
     return render_template('user_login/login.html',title="Login",form=form)
 
