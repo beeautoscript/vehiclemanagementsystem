@@ -77,12 +77,43 @@ def home():
             for i in range(0,len(uniq_list)-1):
                 trip_dict[uniq_list[i]] = occurencex(trip_list,uniq_list[i])    
     # Last Vehicle Entered
-    last_entered_vehicle = VehicleOnPremises.query.filter(VehicleOnPremises.status != False).order_by(VehicleOnPremises.id.desc()).first()
+    if vehicle_inside_premises == 0:
+        last_veh_entry_dict = {}
+    else:
+        last_veh_entry_dict = {}
+        last_entered_vehicle = VehicleOnPremises.query.filter(VehicleOnPremises.status != False).order_by(VehicleOnPremises.id.desc()).first()
+        last_veh_entry_dict['tagid'] = last_entered_vehicle.tagid
+        last_veh_entry_dict['timestamp'] = last_entered_vehicle.entrytime
+        # check the status of the vehicle registered/un-registered
+        status_len = len(RegisteredVehicle.query.filter_by(user_id=current_user.id,tagid=last_entered_vehicle.tagid).all())
+        if status_len == 0:
+            last_veh_entry_dict['status'] = 'Unregistered Vehicle'
+            last_veh_entry_dict['vehicleno'] = 'na'
+        else:
+            last_veh_entry_dict['status'] = 'Registered Vehicle'
+            last_veh_entry_dict['veicleno'] = RegisteredVehicle.query.filter_by(user_id=current_user.id,tagid=last_entered_vehicle.tagid).first().vehiclenum
+           
     # Last Vehicle Exited
-    last_exited_vehicle = VehicleOnPremises.query.filter(VehicleOnPremises.status != True).order_by(VehicleOnPremises.id.desc()).first()
+    if vehicle_exited_premises == 0:
+        last_veh_exit_dict = {}
+    else:
+        last_veh_exit_dict = {}
+        last_exited_vehicle = VehicleOnPremises.query.filter(VehicleOnPremises.status != True).order_by(VehicleOnPremises.id.desc()).first()
+        last_veh_exit_dict['tagid'] = last_exited_vehicle.tagid
+        last_veh_exit_dict['timestamp'] = last_exited_vehicle.exitime
+        # check the status of the vehicle registered/un-registered
+        status_len = len(RegisteredVehicle.query.filter_by(user_id=current_user.id,tagid=last_exited_vehicle.tagid).all())
+        if status_len == 0:
+            last_veh_exit_dict['status'] = 'Unregistered Vehicle'
+            last_veh_exit_dict['vehicleno'] = 'na'
+        else:
+            last_veh_exit_dict['status'] = 'Registered Vehicle'
+            last_veh_exit_dict['veicleno'] = RegisteredVehicle.query.filter_by(user_id=current_user.id,tagid=last_exited_vehicle.tagid).first().vehiclenum
+            
 
     return render_template('users/home.html',title='Home',count_untagged=untagged_vehicles,count_tagged=tagged_vehicles,count_vehicle_inside_premises=vehicle_inside_premises,
-    count_vehicle_exit_premises=vehicle_exited_premises,average_time=average_time,trip_dict=json.dumps(trip_dict),len_trip=len(trip_dict),last_entered_vehicle=last_entered_vehicle,last_exited_vehicle=last_exited_vehicle)
+    count_vehicle_exit_premises=vehicle_exited_premises,average_time=average_time,trip_dict=json.dumps(trip_dict),len_trip=len(trip_dict),
+    last_entered_vehicle=last_veh_entry_dict,last_exited_vehicle=last_veh_exit_dict)
 
 # Total Vehicle inside premises
 @blue.route('/user/onpremises',methods=['GET','POST'])
