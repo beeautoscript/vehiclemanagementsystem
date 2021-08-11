@@ -76,9 +76,13 @@ def home():
         else:
             for i in range(0,len(uniq_list)-1):
                 trip_dict[uniq_list[i]] = occurencex(trip_list,uniq_list[i])    
-         
+    # Last Vehicle Entered
+    last_entered_vehicle = VehicleOnPremises.query.filter(VehicleOnPremises.status != False).order_by(VehicleOnPremises.id.desc()).first()
+    # Last Vehicle Exited
+    last_exited_vehicle = VehicleOnPremises.query.filter(VehicleOnPremises.status != True).order_by(VehicleOnPremises.id.desc()).first()
+
     return render_template('users/home.html',title='Home',count_untagged=untagged_vehicles,count_tagged=tagged_vehicles,count_vehicle_inside_premises=vehicle_inside_premises,
-    count_vehicle_exit_premises=vehicle_exited_premises,average_time=average_time,trip_dict=json.dumps(trip_dict),len_trip=len(trip_dict))
+    count_vehicle_exit_premises=vehicle_exited_premises,average_time=average_time,trip_dict=json.dumps(trip_dict),len_trip=len(trip_dict),last_entered_vehicle=last_entered_vehicle,last_exited_vehicle=last_exited_vehicle)
 
 # Total Vehicle inside premises
 @blue.route('/user/onpremises',methods=['GET','POST'])
