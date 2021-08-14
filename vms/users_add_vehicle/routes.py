@@ -66,7 +66,7 @@ def update_vehicle(uid):
 def vehicle_tag(vehiclenum):
     form = TagVehicleForm()
     if form.validate_on_submit():
-        user_vehicle = RegisteredVehicle.query.filter_by(vehiclenum=vehiclenum).first()
+        user_vehicle = RegisteredVehicle.query.filter_by(user_id=current_user.id,vehiclenum=vehiclenum).first()
         user_vehicle.tagid = form.tagid.data
         db.session.commit()
         flash(f"Vehicle No. {user_vehicle.vehiclenum} tagged successfully",'success')

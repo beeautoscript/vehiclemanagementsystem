@@ -16,7 +16,7 @@ def tag_rfid():
     untag_vehicle_length = len(RegisteredVehicle.query.filter_by(tagid=None).all())
     if form.validate_on_submit():
         kwargs = {'vehiclenum':str(form.registered_vehicle.data)}
-        user_vehicle = RegisteredVehicle.query.filter_by(**kwargs).first()
+        user_vehicle = RegisteredVehicle.query.filter_by(user_id=current_user.id,**kwargs).first()
         user_vehicle.tagid = form.tagid.data
         db.session.commit()
         flash(f"Vehicle No. {user_vehicle.vehiclenum} tagged successfully",'success')

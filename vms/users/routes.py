@@ -75,7 +75,8 @@ def home():
             trip_dict = {}
         else:
             for i in range(0,len(uniq_list)-1):
-                trip_dict[uniq_list[i]] = occurencex(trip_list,uniq_list[i])    
+                trip_dict[uniq_list[i]] = occurencex(trip_list,uniq_list[i])
+                
     # Last Vehicle Entered
     if vehicle_inside_premises == 0:
         last_veh_entry_dict = {}
@@ -132,6 +133,15 @@ def offpremises():
     vehicle_outside_premises = len(VehicleOnPremises.query.filter(VehicleOnPremises.status != True).all())
     offpremises_vehicle_record = VehicleOnPremises.query.filter_by(status=False).paginate(page=page,per_page=10)
     return render_template('users/offpremises.html',title='Vehicles exited premises',count_vehicle_outside_premises=vehicle_outside_premises,offpremises_vehicle_record=offpremises_vehicle_record)
+
+# Total Unregistered Vehicles
+@blue.route('/user/unregister',methods=['GET','POST'])
+@login_required
+def unregisterd():
+    page = request.args.get('page',1,type=int)
+    len_unregisterd_vehicle = len(RegisteredVehicle.query.filter_by(user_id=current_user.id,tagid=None).all())
+    unregisterd_vehicles = RegisteredVehicle.query.filter_by(user_id=current_user.id,tagid=None).paginate(page=page,per_page=10)
+    return render_template('/users/unregister.html',title='Vehicles Unregisterd',count_unregister=len_unregisterd_vehicle,unregisterd_vehicle=unregisterd_vehicles)
 # User Logout
 @blue.route('/logout')
 @login_required

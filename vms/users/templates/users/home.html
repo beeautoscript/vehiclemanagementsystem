@@ -49,29 +49,19 @@
                     </div>
                 </div>
             </div>
-            <!-- <div class="col-2 mb-5">
-                <div class="card h-100 shadow text-white" style="background-color: teal;">
-                    <div class="card-body px-4">
-                        <div class="d-flex justify-content-between align-items-center mb-2">
-                            <div class="me-2">
-                                <div class="display-5 text-white">0</div>
-                                <div class="card-text">Total Registered Vehicles</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div> -->
             <div class="col-2 mb-5">
-                <div class="card h-100 shadow text-white" style="background-color: indigo;"> 
-                    <div class="card-body px-4">
-                        <div class="d-flex justify-content-between align-items-center mb-2">
-                            <div class="me-2">
-                                <div class="display-6 text-white">{{count_untagged}}</div>
-                                <div class="card-text">Total Unregistered Vehicles</div>
+                <a href="{{url_for('users.unregisterd')}}" class="card-link text-decoration-none">
+                    <div class="card h-100 shadow text-white" style="background-color: indigo;"> 
+                        <div class="card-body px-4">
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <div class="me-2">
+                                    <div class="display-6 text-white">{{count_untagged}}</div>
+                                    <div class="card-text">Total Unregistered Vehicles</div>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
+                </a>    
             </div>
         </div>
     </div>
@@ -191,51 +181,57 @@
                             </h5>
                         </div>
                         <div class="card-body p-4">
-                            <div class="d-flex h-100 w-100 align-items-center justify-content-center">
-                                <div class="list-group border">
-                                    {% if count_vehicle_inside_premises == 0 %}
-                                        <div class="list-group-item list-group-item-action" aria-current="true">
-                                            <div class="d-flex w-100 justify-content-between">
-                                                <h6 class="mb-1 fw-bold">Last Vehicle Entered Premises</h6>
-                                            </div>
-                                            <p class="mb-1">Data not available.</p>
+                            <div class="align-items-center justify-content-center">
+                                {% if count_vehicle_inside_premises == 0 %}
+                                    <div class="card mb-2">
+                                        <div class="card-header bg-danger text-white fw-bold">
+                                            Last Vehicle Entered Premises
                                         </div>
-                                    {% else %}
-                                        <div class="list-group-item list-group-item-action active" aria-current="true">
-                                            <div class="d-flex justify-content-between">
-                                                <h6 class="mb-1 fw-bold">Last Vehicle Entered Premises</h6>
-                                            </div>
-                                            <span class="badge bg-warning text-dark rounded-0">Tag Id</span><span class="badge bg-dark rounded-0">{{last_entered_vehicle['tagid']}}</span>
-                                            <span class="badge bg-warning text-dark rounded-0">Date-Time</span><span class="badge bg-dark rounded-0">{{last_entered_vehicle['timestamp']}}</span>
+                                        <div class="card-body">
+                                            <p class="fw-bold">Data not available.</p>
+                                        </div>
+                                    </div>
+                                {% else %}
+                                    <div class="card mb-2">
+                                        <div class="card-header bg-success text-white fw-bold">
+                                            Last Vehicle Entered Premises
+                                        </div>
+                                        <div class="card-body">
+                                            <span class="badge bg-warning text-dark rounded-0 w-25 text-start">Tag Id</span><span class="badge bg-dark rounded-0 w-75 text-start">{{last_entered_vehicle['tagid']}}</span>
+                                            <span class="badge bg-warning text-dark rounded-0 w-25 text-start">Date-Time</span><span class="badge bg-dark rounded-0 w-75 text-start">{{last_entered_vehicle['timestamp']}}</span>
                                             {% if last_entered_vehicle['status'] == 'Unregistered Vehicle' %}
-                                                <span class="badge bg-warning text-dark rounded-0">Status</span><span class="badge bg-dark rounded-0">{{last_entered_vehicle['status']}}</span>
+                                                <span class="badge bg-warning text-dark rounded-0 w-25 text-start">Status</span><span class="badge bg-dark rounded-0 w-75 text-start">{{last_entered_vehicle['status']}}</span>
                                             {% else %}
-                                                <span class="badge bg-warning text-dark rounded-0">Vehicle No.</span><span class="badge bg-dark rounded-0">{{last_entered_vehicle['veicleno']}}</span>
+                                                <span class="badge bg-warning text-dark rounded-0 w-25 text-start">Vehicle No.</span><span class="badge bg-dark rounded-0 w-75 text-start">{{last_entered_vehicle['veicleno']}}</span>
                                             {% endif %}
                                         </div>
-                                    {% endif %}
-                                    {% if count_vehicle_exit_premises == 0 %}
-                                        <div class="list-group-item list-group-item-action" aria-current="true">
-                                            <div class="d-flex w-100 justify-content-between">
-                                                <h6 class="mb-1 fw-bold">Last Vehicle Exited Premises</h6>
-                                            </div>
-                                            <p class="mb-1">Data not available.</p>
+                                    </div>
+                                {% endif %}
+                                {% if count_vehicle_exit_premises == 0 %}
+                                    <div class="card">
+                                        <div class="card-header bg-danger text-white fw-bold">
+                                            Last Vehicle Exited Premises
                                         </div>
-                                    {% else %}
-                                        <div class="list-group-item list-group-item-action active" aria-current="true">
-                                            <div class="d-flex w-100 justify-content-between">
-                                                <h6 class="mb-1 fw-bold">Last Vehicle Exited Premises</h6>
-                                            </div>
-                                            <span class="badge bg-warning text-dark rounded-0">Tag Id</span><span class="badge bg-dark rounded-0">{{last_exited_vehicle['tagid']}}</span>
-                                            <span class="badge bg-warning text-dark rounded-0">Date-Time</span><span class="badge bg-dark rounded-0">{{last_exited_vehicle['timestamp']}}</span>
+                                        <div class="card-body">
+                                            <p class="fw-bold">Data not available.</p>
+                                        </div>
+                                    </div>
+                                {% else %}
+                                    <div class="card">
+                                        <div class="card-header bg-success text-white fw-bold">
+                                            Last Vehicle Exited Premises
+                                        </div>
+                                        <div class="card-body">
+                                            <span class="badge bg-warning text-dark rounded-0 w-25 text-start">Tag Id</span><span class="badge bg-dark rounded-0 w-75 text-start">{{last_exited_vehicle['tagid']}}</span>
+                                            <span class="badge bg-warning text-dark rounded-0 w-25 text-start">Date-Time</span><span class="badge bg-dark rounded-0 w-75 text-start">{{last_exited_vehicle['timestamp']}}</span>
                                             {% if last_exited_vehicle['status'] == 'Unregistered Vehicle' %}
-                                                <span class="badge bg-warning text-dark rounded-0">Status</span><span class="badge bg-dark rounded-0">{{last_exited_vehicle['status']}}</span>
+                                                <span class="badge bg-warning text-dark rounded-0 w-25 text-start">Status</span><span class="badge bg-dark rounded-0 w-75 text-start">{{last_exited_vehicle['status']}}</span>
                                             {% else %}
-                                                <span class="badge bg-warning text-dark rounded-0">Vehicle No.</span><span class="badge bg-dark rounded-0">{{last_exited_vehicle['veicleno']}}</span>
+                                                <span class="badge bg-warning text-dark rounded-0 w-25 text-start">Vehicle No.</span><span class="badge bg-dark rounded-0 w-75 text-start">{{last_exited_vehicle['veicleno']}}</span>
                                             {% endif %}
                                         </div>
-                                    {% endif %}
-                                </div>
+                                    </div>
+                                {% endif %}
                             </div>
                         </div>
                     </div>
